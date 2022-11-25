@@ -1,0 +1,43 @@
+version: '3.9'
+services:
+  app:
+    container_name: privy_test
+    environment:
+      - MYSQL_ROOT_HOST=${DATABASE_HOST} 
+      - MYSQL_USER=${USER}
+      - MYSQL_PASSWORD=${PASSWORD}
+      - MYSQL_DATABASE=${DB}
+      - MYSQL_ROOT_PASSWORD=${PASSWORD}
+    tty: true
+    build: .
+    ports:
+      - 8080:8080
+    restart: on-failure
+    volumes:
+      - .:/app
+    depends_on:
+      - mysqldb
+    networks:
+      - privy
+
+  mysqldb:
+    image: mysql:latest
+    container_name: database_privy
+    environment:
+      - MYSQL_ROOT_HOST=${DATABASE_HOST} 
+      - MYSQL_USER=${USERNAME}
+      - MYSQL_PASSWORD=${PASSWORD}
+      - MYSQL_DATABASE=${DB}
+      - MYSQL_ROOT_PASSWORD=${PASSWORD}
+    ports:
+      - '3306:3306'
+    networks:
+      - privy
+    volumes:
+      - ./schema:/docker-entrypoint-initdb.d
+      - /var/lib/mysql
+      
+# Networks to be created to facilitate communication between containers
+networks:
+  privy:
+    driver: bridge
