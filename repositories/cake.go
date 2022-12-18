@@ -98,10 +98,9 @@ func (c *Repository) UpdateCakeByID(ID int, req entities.CakeRequest) error {
 }
 
 func (c *Repository) DeleteCakeByID(ID int) error {
-	var Query string
 
 	_, err := c.db.Exec(
-		Query,
+		query.DeleteCakeByID,
 		ID,
 	)
 

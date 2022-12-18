@@ -1,6 +1,9 @@
 package usecases
 
-import "privy-test/presenters"
+import (
+	"fmt"
+	"privy-test/presenters"
+)
 
 func (c IUsecases) DeleteCakeByID(ID int) error {
 	res, err := c.repo.GetCakeByID(ID)
@@ -11,7 +14,7 @@ func (c IUsecases) DeleteCakeByID(ID int) error {
 	if res.ID == 0 {
 		return presenters.ErrIdNotFound
 	}
-
+	fmt.Println(ID)
 	err = c.repo.DeleteCakeByID(ID)
 	if err != nil {
 		return err
